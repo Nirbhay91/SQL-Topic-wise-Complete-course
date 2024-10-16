@@ -196,3 +196,122 @@ This repository provides an extensive guide to SQL Database concepts, covering e
 ## 25. Transaction Management & Rollbacks in NoSQL
 - NoSQL vs. SQL Transaction Management
 - MongoDB Transactions, Multi-Document Transactions, Change Streams
+
+
+Sure! Let’s break down the topic of **SQL Concepts & Queries** using the **why, how, and what** format, along with an example in Java and a diagram.
+
+### 1. Database Core Concepts - S1
+#### SQL Concepts & Queries
+
+#### Why
+Understanding SQL concepts and queries is essential for anyone working with relational databases. SQL (Structured Query Language) is the standard language used to communicate with databases. It enables users to perform various operations such as querying, updating, and managing data efficiently. By grasping SQL concepts, developers can create robust applications that interact with databases seamlessly.
+
+#### How
+To understand SQL concepts and queries, one typically follows these steps:
+1. **Learn the Syntax**: Familiarize yourself with the basic SQL syntax for querying databases.
+2. **Practice Queries**: Execute various SQL commands, such as SELECT, INSERT, UPDATE, and DELETE, to manipulate and retrieve data.
+3. **Explore Advanced Queries**: As you progress, dive into more complex queries involving joins, subqueries, and aggregations.
+
+#### What
+SQL concepts encompass the fundamental principles of how databases operate and how data can be manipulated through SQL queries. Key concepts include:
+- **Data Definition Language (DDL)**: Commands like CREATE, ALTER, DROP that define and manage database schema.
+- **Data Manipulation Language (DML)**: Commands like SELECT, INSERT, UPDATE, DELETE that manage data within the database.
+- **Data Control Language (DCL)**: Commands like GRANT and REVOKE that control access to data in the database.
+
+### Example: SQL Query in Java
+Here’s an example of how to connect to a database using Java and execute a simple SQL query.
+
+#### Java Code Example
+This example uses JDBC (Java Database Connectivity) to connect to a MySQL database and retrieve data from a `users` table.
+
+```java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class SQLExample {
+    // Database URL, username, and password
+    static final String DB_URL = "jdbc:mysql://localhost:3306/mydatabase";
+    static final String USER = "username";
+    static final String PASS = "password";
+
+    public static void main(String[] args) {
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            // Register JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Open a connection
+            System.out.println("Connecting to database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            // Execute a query
+            System.out.println("Creating statement...");
+            stmt = conn.createStatement();
+            String sql = "SELECT id, name, email FROM users";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Extract data from result set
+            while (rs.next()) {
+                // Retrieve by column name
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+
+                // Display values
+                System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email);
+            }
+            // Clean-up environment
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            // Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            // Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            // Finally block used to close resources
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se) {
+            }
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+### Diagram
+Here's a simple diagram illustrating the interaction between a Java application and a relational database through SQL queries.
+
+```plaintext
++--------------------+        +--------------------+
+|   Java Application  |        |   Relational DB    |
++--------------------+        +--------------------+
+| 1. Load JDBC Driver |        |                    |
+| 2. Establish Connection ----->|                    |
+| 3. Create Statement  |        |                    |
+| 4. Execute SQL Query  |------->|   Execute SQL     |
+| 5. Retrieve Results   |<-------|   Return Results  |
+| 6. Close Connection    |<------|                    |
++--------------------+        +--------------------+
+```
+
+### Summary
+- **Why**: Understanding SQL is crucial for interacting with databases.
+- **How**: Learn syntax and practice executing various queries.
+- **What**: Key concepts include DDL, DML, and DCL.
+- **Example**: Provided a Java example demonstrating how to connect to a MySQL database and execute a SELECT query.
+- **Diagram**: Illustrated the flow of operations between a Java application and a relational database.
+
+This format provides a comprehensive overview of SQL concepts and queries in the context of Java development.
